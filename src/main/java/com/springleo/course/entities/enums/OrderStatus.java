@@ -17,8 +17,9 @@ public enum OrderStatus {
 	public int getCode() {
 		return code;
 	}
-	
+	//converter de numero para o OrderStatus correspondente ex 1, 2 ou 3 etc
 	public static OrderStatus valueOf(int code) {
+		//se esse codigo que vc escreveu for igual a algum codigo do orderstatus ele retorna
 		for(OrderStatus value : OrderStatus.values()) {
 			if(value.getCode() == code) {
 				return value;
