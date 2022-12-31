@@ -3,12 +3,12 @@ package com.springleo.course.entities;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.springleo.course.entities.enums.OrderStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
@@ -39,7 +40,8 @@ public class Order implements Serializable {
 	private User client;
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
-	
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)//essa variavel cascade so usa no 1 para 1 que tiver o mesmo id. ex
+	private Payment payment;                                // ex um pagamento vai ter a mesma id que a ordem.
 	
 	public Order() {
 		
@@ -101,9 +103,23 @@ public class Order implements Serializable {
 	}
 
 
+	
+	public Payment getPayment() {
+		return payment;
+	}
+
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
+
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(client, id, moment);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 
@@ -116,10 +132,18 @@ public class Order implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		return Objects.equals(client, other.client) && Objects.equals(id, other.id)
-				&& Objects.equals(moment, other.moment);
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 	
+	
+	
+	
+
 	
 
 }
