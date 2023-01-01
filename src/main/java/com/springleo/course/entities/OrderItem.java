@@ -73,7 +73,10 @@ public class OrderItem implements Serializable {
 		id.setProduct(Product);
 
 	}
-
+	
+	public Double getsubTotal() {
+		return price * quantity;
+	}
 
 	@Override
 	public int hashCode() {
